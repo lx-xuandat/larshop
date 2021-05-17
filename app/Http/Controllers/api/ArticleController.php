@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Article as ResourcesArticle;
 use App\Models\Article;
+use Exception;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -12,9 +13,10 @@ class ArticleController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $articles = Article::paginate(10);
 
@@ -36,7 +38,11 @@ class ArticleController extends Controller
         $article->body = $request->input('body');
 
         if ($article->save()) {
-            return new ResourcesArticle($article);
+            return response()->json([
+                'status_code' => 203,
+                'message' => 'created successful',
+                'article' => $article,
+            ]);
         }
     }
 
@@ -52,7 +58,13 @@ class ArticleController extends Controller
         $article = Article::findOrFail($id);
 
         // Return single article as a Resouce
-        return new ResourcesArticle($article);
+        return response()->json([
+            'version' => 1,
+            'author' => 'xuandat',
+            'status_code' => 200,
+            'message' => 'success',
+            'article' => new ResourcesArticle($article),
+        ]);
     }
 
     /**
@@ -64,7 +76,43 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->store($request);
+        $article = Article::findOrFail($id);
+
+        if ($request->isMethod('patch')) {
+            echo "patch \n";
+
+            if ($request->has('title')) {
+                $article->title = $request->input('title');
+            }
+
+            if ($request->has('body')) {
+                $article->body = $request->input('body');
+            }
+
+            if ($article->save()) {
+                return response()->json([
+                    'version' => 1,
+                    'author' => 'lx.xuandat@gmail.com',
+                    'status_code' => 200,
+                    'message' => 'update successful',
+                    'article' => $article,
+                ]);
+            }
+        }
+
+        if ($request->isMethod('put')) {
+            echo "put \n";
+
+            $article->update($request->all());
+
+            return response()->json([
+                'version' => 1,
+                'author' => 'lx.xuandat@gmail.com',
+                'status_code' => 200,
+                'message' => 'update successful',
+                'article' => $article,
+            ]);
+        }
     }
 
     /**
@@ -76,10 +124,27 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         // Get article
-        $article = Article::findOrFail($id);
+        $article = Article::find($id);
 
-        if ($article->delete()) {
-            return new ResourcesArticle($article);
+        try {
+            if ($article) {
+                $article->delete();
+
+                return response()->json([
+                    'status_code' => 204,
+                    'message' => 'delete success',
+                ]);
+            }
+
+            return response()->json([
+                'status_code' => 404,
+                'message' => 'not found',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status_code' => 200,
+                'message' => 'delete Exception',
+            ]);
         }
     }
 }
