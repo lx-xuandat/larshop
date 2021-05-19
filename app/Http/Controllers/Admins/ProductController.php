@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admins;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -13,6 +15,11 @@ class ProductController extends Controller
     protected $productService;
     public $viewBag = [];
 
+    public function __construct(ProductService $productService)
+    {
+        $this->productService = $productService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,11 +27,11 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = $this->productService->getLists();
+        $products = $this->productService->getLists(30);
         $data = [
             'products' => $products,
         ];
-        return $this->view('eshopper.shop', $data);
+        return view('admin.products', $data);
     }
 
     /**
@@ -45,7 +52,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return 'abc';
     }
 
     /**
@@ -56,7 +63,6 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $product = Product::find($product->id);
         return response()->json($product);
     }
 
@@ -80,6 +86,8 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+        return response()->json('ff');
+
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admins\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,9 +23,11 @@ Route::prefix('admin')->group(function () {
         return view('admin.dashboard');
     });
 
-    Route::get('/products', function () {
-        return view('admin.products');
-    });
+    Route::get('/products', [ProductController::class, 'index']);
+    Route::post('/products', [ProductController::class, 'store']);
+    Route::get('/products/{product}', [ProductController::class, 'show']);
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy']);
 
     Route::get('/customers', function () {
         return view('admin.customers');
