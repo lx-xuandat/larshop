@@ -27,7 +27,7 @@
                 $('.btn-save').val("add");
                 $('#modalFormData').trigger("reset");
                 $('#productEditorModal').modal('show');
-                $('.modal-title').text('Create Product')
+                $('.modal-title').text('Create Product');
             });
 
             ////----- Open the modal to UPDATE -----////
