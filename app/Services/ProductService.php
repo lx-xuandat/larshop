@@ -23,9 +23,14 @@ class ProductService extends BaseService
      * @param array $option
      * @param $page
      */
-    function getLists($paginate = 15, $option = [])
+    function getLists($paginate = null, $option = [])
     {
-        $products = $this->productModel->paginate($paginate);
+        if ($paginate) {
+            $products = $this->productModel->paginate($paginate);
+        } else {
+            $products = $this->productModel->all();
+        }
+
         return $products;
     }
 }

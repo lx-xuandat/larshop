@@ -1,7 +1,8 @@
 $(function () {
     $("#example1").DataTable({
         "responsive": true,
-        "autoWidth": false,
+        "autoWidth": true,
+        "columnDefs": [{ targets: 0, orderable: false }]
     });
 
     $('#example2').DataTable({

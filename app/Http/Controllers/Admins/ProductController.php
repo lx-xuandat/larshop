@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -13,7 +14,6 @@ class ProductController extends Controller
      * @var ProductService $productService
      */
     protected $productService;
-    public $viewBag = [];
 
     public function __construct(ProductService $productService)
     {
@@ -27,7 +27,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = $this->productService->getLists(30);
+        $products = $this->productService->getLists();
         $data = [
             'products' => $products,
         ];
@@ -52,7 +52,24 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        return 'abc';
+        $product = $request->isMethod('put') ? Product::findOrFail($request->product_id) : new Product;
+
+        $product->name = $request->input('name');
+        $product->code = $request->input('code');
+        $product->price = $request->input('price');
+        $product->quantity = $request->input('quantity');
+        $product->status = $request->input('status');
+        $product->images = $request->input('images');
+        $product->weight = $request->input('weight');
+        $product->user_id = 1;
+
+        if ($product->save()) {
+            return response()->json([
+                'status_code' => 203,
+                'message' => 'created successful',
+                'product' => $product,
+            ]);
+        }
     }
 
     /**
@@ -86,8 +103,9 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        return response()->json('ff');
+        $product->update($request->except(['productId']));
 
+        return response()->json($product);
     }
 
     /**
@@ -98,6 +116,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        // destroy product
+
+    }
+
+    public function deleteAll(Request $request){
+        $ids = $request->ids;
+        DB::table("products")->whereIn('id',explode(",",$ids))->delete();
+        return response()->json(['success'=>"Products Deleted successfully."]);
     }
 }
