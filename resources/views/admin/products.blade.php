@@ -22,6 +22,8 @@
 @section('js')
     <script>
         $(document).ready(function() {
+            $(".no-sort").removeClass("sorting_asc");
+
             ////----- Open the modal to CREATE -----////
             $('#btn-add').click(function() {
                 $('.btn-save').val("add");
@@ -31,9 +33,9 @@
             });
 
             ////----- Open the modal to UPDATE -----////
-            $('tbody.product-items').on('click', 'tr', function() {
+            $('tbody.product-items').on('click', 'tr td:not(:first-child)', function() {
                 var modal = $('#productEditorModal');
-                var product_id = $(this).data("id");
+                var product_id = $(this).parent().data("id");
 
                 $.get('/admin/products/' + product_id, function(data, statusText, xhr) {
                     console.log(xhr.status + " " + statusText);
@@ -55,7 +57,8 @@
 
     </script>
 
-    @include('admin.js.productsave')
+    @include('admin.js.product-save')
+    @include('admin.js.product-delete')
 @stop
 
 @section('content')
@@ -64,11 +67,12 @@
     <div class="card">
         <div class="card-header">
             <div class="row">
-                <div class="col-sm-8 mt-2">
+                <div class="col-sm-9 mt-2">
                     <h3 class="card-title ">DataTable with default features</h3>
                 </div>
-                <div class="col-sm-4 mt-2">
-                    <button class="btn btn-success float-right" id="btn-add">Create New</button>
+                <div class="col-sm-3 float-right">
+                    <button class="btn btn-success float-right ml-2 mr-2 mt-2" id="btn-add">Create New</button>
+                    <button class="btn btn-danger float-right ml-2 mr-2 mt-2" id="btn-delete">Delete</button>
                 </div>
             </div>
         </div>
@@ -77,6 +81,9 @@
             <table id="example1" class="table table-bordered table-striped btn-new btn-new-product">
                 <thead>
                     <tr>
+                        <th class="no-sort">
+                            {{-- <input type="checkbox" name="vehicle1" value="Bike"> --}}
+                        </th>
                         <th>Name</th>
                         <th>Price</th>
                         <th>Quantity</th>
@@ -86,8 +93,10 @@
                 </thead>
                 <tbody class="product-items">
                     @foreach ($products as $product)
-                        {{-- data-toggle="modal" data-target="#productEditorModal" --}}
                         <tr style="cursor: pointer" data-id="{{ $product->id }}">
+                            <td>
+                                <input type="checkbox" name="product-id" class="product-id" value="{{ $product->id }}">
+                            </td>
                             <td class="name">{{ $product->name }}</td>
                             <td class="price">{{ $product->price }}</td>
                             <td class="quantity">{{ $product->quantity }}</td>
@@ -97,6 +106,8 @@
                     @endforeach
                 </tbody>
                 <tfoot>
+                    <th class="no-sort">
+                    </th>
                     <th>Name</th>
                     <th>Price</th>
                     <th>Quantity</th>

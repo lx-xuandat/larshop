@@ -28,6 +28,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/products/{product}', [ProductController::class, 'show']);
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy']);
+    Route::post('/products/deletes', [ProductController::class, 'deleteAll']);
 
     Route::get('/customers', function () {
         return view('admin.customers');

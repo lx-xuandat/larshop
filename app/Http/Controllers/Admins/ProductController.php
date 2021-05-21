@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -13,7 +14,6 @@ class ProductController extends Controller
      * @var ProductService $productService
      */
     protected $productService;
-    public $viewBag = [];
 
     public function __construct(ProductService $productService)
     {
@@ -104,8 +104,8 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $product->update($request->except(['productId']));
-        return response()->json($product);
 
+        return response()->json($product);
     }
 
     /**
@@ -116,6 +116,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        // destroy product
+
+    }
+
+    public function deleteAll(Request $request){
+        $ids = $request->ids;
+        DB::table("products")->whereIn('id',explode(",",$ids))->delete();
+        return response()->json(['success'=>"Products Deleted successfully."]);
     }
 }
