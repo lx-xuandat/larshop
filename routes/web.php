@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admins\CustomerController;
 use App\Http\Controllers\Admins\ProductController;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,4 +39,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/orders', function () {
         return view('admin.orders');
     });
+
+    Route::apiResource('customers', CustomerController::class);
+    Route::get('get-customers', [CustomerController::class, 'getCustomers'])->name('get-customers');
+
 });

@@ -57,8 +57,8 @@
 
     </script>
 
-    @include('admin.js.product-save')
-    @include('admin.js.product-delete')
+    @include('admin.products.product-save')
+    @include('admin.products.product-delete')
 @stop
 
 @section('content')
@@ -100,7 +100,7 @@
                             <td class="name">{{ $product->name }}</td>
                             <td class="price">{{ $product->price }}</td>
                             <td class="quantity">{{ $product->quantity }}</td>
-                            <td class="images">{{ $product->images }}</td>
+                            <td class="images"><img src="{{ $product->images }}" alt="" width="48px" height="64px"></td>
                             <td class="status">{{ $product->status }}</td>
                         </tr>
                     @endforeach
