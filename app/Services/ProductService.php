@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\Models\Product;
 
-class ProductService extends BaseService
+class ProductService
 {
     protected $productModel;
 

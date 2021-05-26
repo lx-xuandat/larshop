@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admins\CustomerController;
+use App\Http\Controllers\Admins\OrderController;
 use App\Http\Controllers\Admins\ProductController;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Route;
@@ -43,4 +44,6 @@ Route::prefix('admin')->group(function () {
     Route::apiResource('customers', CustomerController::class);
     Route::get('get-customers', [CustomerController::class, 'getCustomers'])->name('get-customers');
 
+    Route::apiResource('orders', OrderController::class);
+    Route::get('get-orders', [OrderController::class, 'get'])->name('orders.get');
 });

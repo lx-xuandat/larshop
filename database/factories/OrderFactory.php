@@ -22,7 +22,11 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'code' => 'DH' . $this->faker->numberBetween(100000, 999999),
+            'user_id' => $this->faker->numberBetween(1, 20),
+            'address' => $this->faker->address,
+            'total_price' => 0,
+            'status' => $this->faker->numberBetween(1, 4),
         ];
     }
 }

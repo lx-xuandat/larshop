@@ -123,6 +123,7 @@ class ProductController extends Controller
 
     }
 
+    //deleteAll -> deleteCheckedProducts
     public function deleteAll(Request $request){
         $ids = $request->ids;
         DB::table("products")->whereIn('id',explode(",",$ids))->delete();
