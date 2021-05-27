@@ -26,6 +26,11 @@ class Customer extends Model
         return static::orderBy('created_at', 'desc')->get();
     }
 
+    public function orders()
+    {
+        return $this->hasMany('App\Models\Order');
+    }
+
     public function storeData($input)
     {
         return static::create($input);

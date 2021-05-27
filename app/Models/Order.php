@@ -39,4 +39,14 @@ class Order extends Model
     {
         return static::find($id)->delete();
     }
+
+    public function customer()
+    {
+        return $this->hasOne('App\Models\Customer');
+    }
+
+    public function products()
+    {
+        return $this->hasMany('App\Models\Product');
+    }
 }
