@@ -20,16 +20,6 @@ class Order extends Model
         return static::orderBy('created_at', 'desc')->get();
     }
 
-    // public function storeData($input)
-    // {
-    //     return static::create($input);
-    // }
-
-    // public function findData($id)
-    // {
-    //     return static::find($id);
-    // }
-
     public function updateData($id, $input)
     {
         return static::find($id)->update($input);
@@ -42,11 +32,11 @@ class Order extends Model
 
     public function customer()
     {
-        return $this->hasOne('App\Models\Customer');
+        return $this->hasOne('App\Models\Customer', 'id', 'user_id');
     }
 
     public function products()
     {
-        return $this->hasMany('App\Models\Product');
+        return $this->belongsToMany('App\Models\Product', 'order_details', 'order_id', 'product_id');
     }
 }

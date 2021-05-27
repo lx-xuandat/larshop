@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\CssSelector\XPath\Extension\FunctionExtension;
 
 class Customer extends Model
 {
@@ -28,7 +29,7 @@ class Customer extends Model
 
     public function orders()
     {
-        return $this->hasMany('App\Models\Order');
+        return $this->hasMany('App\Models\Order', 'user_id');
     }
 
     public function storeData($input)
