@@ -6,6 +6,7 @@
 
 @section('content_header')
     <h1>Products</h1>
+    <button class="click-me">Click Me</button>
 @stop
 
 @section('css')
@@ -59,6 +60,8 @@
 
     @include('admin.products.product-save')
     @include('admin.products.product-delete')
+
+    <script src="{{ asset('js/admin.js') }}"></script>
 @stop
 
 @section('content')

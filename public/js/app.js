@@ -1834,17 +1834,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./resources/js/admin.js":
-/*!*******************************!*\
-  !*** ./resources/js/admin.js ***!
-  \*******************************/
-/***/ (() => {
-
-// btn-new click
-$(".btn-new").click(function () {});
-
-/***/ }),
-
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -1854,8 +1843,6 @@ $(".btn-new").click(function () {});
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! ./datatable */ "./resources/js/datatable.js");
-
-__webpack_require__(/*! ./admin */ "./resources/js/admin.js");
 
 /***/ }),
 
