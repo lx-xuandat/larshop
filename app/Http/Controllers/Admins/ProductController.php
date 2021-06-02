@@ -53,8 +53,6 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $request->validated();
-
         $product = $request->isMethod('put') ? Product::findOrFail($request->product_id) : new Product;
 
         $product->name = $request->input('name');
@@ -124,9 +122,10 @@ class ProductController extends Controller
     }
 
     //deleteAll -> deleteCheckedProducts
-    public function deleteAll(Request $request){
+    public function deleteAll(Request $request)
+    {
         $ids = $request->ids;
-        DB::table("products")->whereIn('id',explode(",",$ids))->delete();
-        return response()->json(['success'=>"Products Deleted successfully."]);
+        DB::table("products")->whereIn('id', explode(",", $ids))->delete();
+        return response()->json(['success' => "Products Deleted successfully."]);
     }
 }

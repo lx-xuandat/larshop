@@ -6,62 +6,6 @@
 
 @section('content_header')
     <h1>Products</h1>
-    <button class="click-me">Click Me</button>
-@stop
-
-@section('css')
-    <style>
-        table tbody tr:hover {
-            background-color: #28a745 !important;
-            color: white
-        }
-
-    </style>
-
-@stop
-
-@section('js')
-    <script>
-        $(document).ready(function() {
-            $(".no-sort").removeClass("sorting_asc");
-
-            ////----- Open the modal to CREATE -----////
-            $('#btn-add').click(function() {
-                $('.btn-save').val("add");
-                $('#modalFormData').trigger("reset");
-                $('#productEditorModal').modal('show');
-                $('.modal-title').text('Create Product');
-            });
-
-            ////----- Open the modal to UPDATE -----////
-            $('tbody.product-items').on('click', 'tr td:not(:first-child)', function() {
-                var modal = $('#productEditorModal');
-                var product_id = $(this).parent().data("id");
-
-                $.get('/admin/products/' + product_id, function(data, statusText, xhr) {
-                    console.log(xhr.status + " " + statusText);
-                    modal.find('input[name="productId"]').val(product_id);
-                    modal.find('input[name="name"]').val(data.name);
-                    modal.find('input[name="code"]').val(data.code);
-                    modal.find('input[name="price"]').val(data.price);
-                    modal.find('input[name="weight"]').val(data.weight);
-                    modal.find('input[name="quantity"]').val(data.quantity);
-                    modal.find('select[name="status"]').val(data.status);
-                    modal.find('textarea[name="description"]').val(data.description);
-
-                    $('#btn-save').val("update");
-                    $('#btn-save').data("product-id", product_id);
-                    $('#productEditorModal').modal('show');
-                });
-            });
-        });
-
-    </script>
-
-    @include('admin.products.product-save')
-    @include('admin.products.product-delete')
-
-    <script src="{{ asset('js/admin.js') }}"></script>
 @stop
 
 @section('content')
@@ -74,8 +18,8 @@
                     <h3 class="card-title ">DataTable with default features</h3>
                 </div>
                 <div class="col-sm-3 float-right">
-                    <button class="btn btn-success float-right ml-2 mr-2 mt-2" id="btn-add">Create New</button>
-                    <button class="btn btn-danger float-right ml-2 mr-2 mt-2" id="btn-delete">Delete</button>
+                    <button class="btn btn-success float-right ml-2 mr-2 mt-2" id="btnCreate">Create New</button>
+                    <button class="btn btn-danger float-right ml-2 mr-2 mt-2" id="btnDelete">Delete</button>
                 </div>
             </div>
         </div>
@@ -144,12 +88,14 @@
                                 <div class="form-group">
                                     <label>Name</label>
                                     <input type="text" name="name" class="form-control" placeholder="Enter ...">
+                                    <small id="nameHelper" class="text-danger"></small>
                                 </div>
                             </div>
                             <div class="col-sm-5">
                                 <div class="form-group">
                                     <label>Code</label>
                                     <input type="text" name="code" class="form-control" placeholder="Enter ...">
+                                    <small id="codeHelper" class="text-danger"></small>
                                 </div>
                             </div>
                         </div>
@@ -160,6 +106,7 @@
                                 <div class="form-group">
                                     <label>Price</label>
                                     <input type="text" name="price" class="form-control" placeholder="Enter ...">
+                                    <small id="priceHelper" class="text-danger"></small>
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -167,12 +114,14 @@
                                 <div class="form-group">
                                     <label>Weight</label>
                                     <input type="text" name="weight" class="form-control" placeholder="Enter ...">
+                                    <small id="weightHelper" class="text-danger"></small>
                                 </div>
                             </div>
                             <div class="col-sm-3">
                                 <div class="form-group">
                                     <label>Quantity</label>
                                     <input type="text" name="quantity" class="form-control" placeholder="Enter ...">
+                                    <small id="quantityHelper" class="text-danger"></small>
                                 </div>
                             </div>
 
@@ -185,6 +134,7 @@
                                         <option value="1">Disable</option>
                                         <option value="2">Sale Off</option>
                                     </select>
+                                    <small id="statusHelper" class="text-danger"></small>
                                 </div>
                             </div>
                         </div>
@@ -196,6 +146,7 @@
                                     <label>Description</label>
                                     <textarea class="form-control" name="description" rows="3"
                                         placeholder="Enter ..."></textarea>
+                                    <small id="name" class="text-danger"></small>
                                 </div>
                             </div>
                         </div>
@@ -205,10 +156,25 @@
                 <!-- Modal footer -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success btn-save" id="btn-save">Save</button>
+                    <button type="button" class="btn btn-success btn-save" id="btnSave">Save</button>
                 </div>
 
             </div>
         </div>
     </div>
+@stop
+
+@section('css')
+    <style>
+        table tbody tr:hover {
+            background-color: #28a745 !important;
+            color: white
+        }
+
+    </style>
+
+@stop
+
+@section('js')
+    <script src="/js/product.js"></script>
 @stop

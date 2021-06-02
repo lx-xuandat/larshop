@@ -42,8 +42,6 @@
         </div>
     </div>
 
-    @include('admin.orders.create-edit')
-    @include('admin.orders.delete')
 @stop
 
 @section('css')
@@ -51,113 +49,5 @@
 @stop
 
 @section('js')
-    <script>
-        // IIFE - Immediately Invoked Function Expression
-        (function($, window, document) {
-
-            function get() {
-                console.log('get order');
-
-                return $('.datatable').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    autoWidth: false,
-                    pageLength: 10,
-                    // scrollX: true,
-                    "order": [
-                        [0, "desc"]
-                    ],
-                    ajax: '{{ route('orders.get') }}',
-                    columns: [{
-                            data: 'id',
-                            name: '#',
-                        },
-                        {
-                            data: 'code',
-                            name: 'Order Code'
-                        },
-                        {
-                            data: 'user_id',
-                            name: 'Customer'
-                        },
-                        {
-                            data: 'address',
-                            name: 'Address'
-                        },
-                        {
-                            data: 'total_price',
-                            name: 'Total Price	'
-                        },
-                        {
-                            data: 'status',
-                            name: 'Status'
-                        },
-                        {
-                            data: 'Actions',
-                            name: 'Actions',
-                            orderable: false,
-                            serachable: false,
-                            sClass: 'text-center'
-                        },
-                    ]
-                });
-            }
-
-            function store(id) {
-                console.log('destroy');
-
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    }
-                });
-
-                return $.ajax({
-                    url: "/admin/orders/" + id,
-                    method: "DELETE",
-                });
-            }
-
-            function update(id) {
-                console.log('destroy');
-
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    }
-                });
-
-                return $.ajax({
-                    url: "/admin/orders/" + id,
-                    method: "DELETE",
-                });
-            }
-
-            function destroy(id) {
-                console.log('destroy');
-
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    }
-                });
-
-                return $.ajax({
-                    url: "/admin/orders/" + id,
-                    method: "DELETE",
-                });
-            }
-
-            // Listen for the jQuery ready event on the document
-            $(function() {
-                get();
-
-            });
-            // The rest of the code goes here!
-
-        }(window.jQuery, window, document));
-        // The global jQuery object is passed as a parameter
-
-    </script>
-    {{-- init datatable --}}
+    <script src="/js/admin.js"></script>
 @stop

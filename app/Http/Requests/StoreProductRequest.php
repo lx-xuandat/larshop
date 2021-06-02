@@ -24,8 +24,24 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|max:255',
-            'code'=>'required|max:8|min:8',
+            'name' => 'required|max:255',
+            'code' => 'required|max:10|min:8',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'name.required' => 'Name khong duoc bo trong',
+            'code.required' => 'Ma Code khong duoc bo trong',
+            'name.max' => 'Ten qua dai',
+            'code.min' => 'Code qua ngan',
+            'code.max' => 'Code qua dai',
         ];
     }
 }
