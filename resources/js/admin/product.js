@@ -38,14 +38,18 @@ import { Store, UI } from './base.js';
         var form = $("#modalFormData");
         var modal = $("#productEditorModal");
         var title = $('.modal-title');
+        var productTable = $('tbody.product-items');
 
+        // Event
+
+        // Save
         var btnSave = $("#btnSave");
         btnSave.on({
             "click": function () {
                 store.addBySerializeForm(form)
                     .done(function (response) {
-                        UI.showError(response.message);
-                        // UI.addProductToList(response);
+                        UI.showSuccess(response.message);
+                        UI.addProductToList(productTable, response.product);
                     })
                     .fail(function (response) {
                         // not found server
@@ -53,23 +57,51 @@ import { Store, UI } from './base.js';
                             UI.showError('Server Not Found');
                         }
 
+                        UI.showError('Vui Long Kiem Tra lai thong tin nhap lieu');
+
                         UI.showErrorsHelper(form, JSON.parse(response.responseText).errors);
                     });
             },
         });
 
+        // Delete
         var btnDelete = $("#btnDelete");
         btnDelete.on({
             "click": function () {
-                UI.confirmDelete();
+                var arr_id = [];
+                var products = $("input.product-id[type=checkbox][name=product-id]:checked");
+
+                products.each(function (index) {
+                    arr_id.push($(this).val());
+                });
+
+                if (arr_id.length == 0) {
+                    Swal.fire(
+                        'Chu Y',
+                        'Vui Long Chon San Pham Can Xoa.',
+                        'success'
+                    )
+                    return;
+                }
+
+                UI.confirmDelete().then((result) => {
+                    if (result.isConfirmed) {
+                        store.destroy(arr_id).done(function (response) {
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            );
+                            UI.remove(products);
+                        }).fail(function (response) {
+
+                        });
+                    }
+                });
             },
         });
 
-        var btnDestroy = $("#btnDestroy");
-
-        var btnUpdate = $("#btnUpdate");
-
-        // Show Form Create
+        // Create
         var btnCreate = $("#btnCreate");
         btnCreate.on({
 
@@ -81,7 +113,7 @@ import { Store, UI } from './base.js';
 
         });
 
-        // show form update
+        // Edit
         $('tbody.product-items').on('click', 'tr td:not(:first-child)', function () {
 
             var id_resource = $(this).parent().data("id");
@@ -94,6 +126,28 @@ import { Store, UI } from './base.js';
                 });
         });
 
+        // Update
+        var btnUpdate = $("#btnUpdate");
+        btnUpdate.on({
+            "click": function () {
+                btnUpdate.val('update');
+                store.addBySerializeForm(form)
+                    .done(function (response) {
+                        UI.showSuccess(response.message);
+                        UI.addProductToList(productTable, response.product);
+                    })
+                    .fail(function (response) {
+                        // not found server
+                        if (response.status == 404) {
+                            UI.showError('Server Not Found');
+                        }
+
+                        UI.showError('Vui Long Kiem Tra lai thong tin nhap lieu');
+
+                        UI.showErrorsHelper(form, JSON.parse(response.responseText).errors);
+                    });
+            }
+        })
 
     });
 

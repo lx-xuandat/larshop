@@ -19,6 +19,21 @@ class Store {
         })
     }
 
+    /**
+     *
+     * @param {string} id - id resource
+     * @param {object} form - element object
+     * @returns
+     */
+    update(id, form) {
+        return $.ajax({
+            url: this.base_url + '/' + id,
+            method: 'POST',
+            data: form.serialize(),
+            dataType: 'JSON',
+        })
+    }
+
     getById(id) {
         var dynamicData = {};
         dynamicData["id"] = id;
@@ -28,9 +43,29 @@ class Store {
             data: dynamicData
         });
     }
+
+    destroy(arr_id) {
+        return $.ajax({
+            data: 'ids=' + arr_id.join(","),
+            url: this.base_url + '/deletes',
+            type: 'POST',
+            dataType: 'json'
+        });
+    }
 }
 
 class UI {
+
+    /**
+     * remove elements in ui
+     * @param {object} elements List elements in DOM
+     */
+    static remove(elements) {
+        elements.each(function (index) {
+            $(this).parent().parent().remove();
+        });
+    }
+
     static UpdateModalForm(form, data) {
         form.find('input[name="name"]').val(data.name);
         form.find('input[name="code"]').val(data.code);
@@ -68,8 +103,27 @@ class UI {
         title.text('Update Product');
     }
 
-    static addProductToList(data) {
-        console.log(data);
+    /**
+     *
+     * @param {element} list - element product html
+     * @param {object} _productModel - product resource
+     */
+    static addProductToList(list, model) {
+
+        const row = document.createElement('tr');
+
+        row.innerHTML = `<tr style="cursor: pointer" data-id="${model.id}">
+            <td>
+                <input type="checkbox" name="product-id" class="product-id" value="${model.id}">
+            </td>
+            <td class="name">${model.name}</td>
+            <td class="price">${model.price}</td>
+            <td class="quantity">${model.quantity}</td>
+            <td class="images"><img src="${model.images}" alt="" width="48px" height="64px"></td>
+            <td class="status">${model.status}</td>
+        </tr>`;
+
+        list.prepend(row);
     }
 
     /**
@@ -96,14 +150,14 @@ class UI {
             icon: 'success',
             title: message,
             showConfirmButton: false,
-            timer: 1500
+            timer: 15000
         })
     }
 
     /**
      *
      * @param {object} _form - form object
-     * @param {object} _errors - errors message object
+     * @param {array} _errors - errors message object
      */
     static showErrorsHelper(_form, _errors) {
         var x;
@@ -117,13 +171,13 @@ class UI {
 
     static confirmDelete() {
         return Swal.fire({
-            title: 'Bạn chắc chưa?',
-            text: "Bạn sẽ không thể phục hồi",
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Xóa'
+            confirmButtonText: 'Yes, delete it!'
         })
     }
 }

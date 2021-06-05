@@ -2,6 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\name;
+use App\Rules\price;
+use App\Rules\quantity;
+use App\Rules\weight;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProductRequest extends FormRequest
@@ -24,8 +28,12 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
-            'code' => 'required|max:10|min:8',
+            'name' => ['required', 'max:255'],
+            'code' => 'required|max:8|min:8|unique:products',
+            'price' => ['required', new price],
+            'weight' => ['required', new weight],
+            'quantity' => ['required', new quantity],
+            'description' => 'required',
         ];
     }
 

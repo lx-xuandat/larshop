@@ -146,7 +146,7 @@
                                     <label>Description</label>
                                     <textarea class="form-control" name="description" rows="3"
                                         placeholder="Enter ..."></textarea>
-                                    <small id="name" class="text-danger"></small>
+                                    <small id="descriptionHelper" class="text-danger"></small>
                                 </div>
                             </div>
                         </div>
