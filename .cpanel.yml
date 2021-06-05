@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/xuandatw1/repositories/larshop/
+    - /bin/cp -rf images $DEPLOYPATH
+    - /bin/cp -rf content $DEPLOYPATH
