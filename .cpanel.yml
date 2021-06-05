@@ -2,5 +2,6 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/xuandatw1/repositories/larshop/
+    - /bin/cp public/index.php $DEPLOYPATH
     - /bin/cp -rf images $DEPLOYPATH
     - /bin/cp -rf content $DEPLOYPATH
