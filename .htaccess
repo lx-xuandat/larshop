@@ -2,7 +2,7 @@ DirectoryIndex index.php
 <IfModule mod_rewrite.c>
 
     RewriteEngine On
-    RewriteBase /test/
+    RewriteBase /public/
 
     RewriteRule ^$ public/index.php [L]
 
